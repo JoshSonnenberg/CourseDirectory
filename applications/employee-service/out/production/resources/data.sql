@@ -1,0 +1,2 @@
+insert into employee (id, firstName, lastName, employeeNumber, office, title, email, imageURL)
+  values ('66921076-ed1d-458b-9d7d-ce9a227d64a5', 'Josh', 'Sonnenberg', 250, 'Chicago', 'Sr. Technical Consultant', 'jsonnenberg@solstice.com', null);

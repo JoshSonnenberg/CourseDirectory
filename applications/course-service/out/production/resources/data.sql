@@ -1,0 +1,1 @@
+insert into course (id, name, tags) values ('66921076-fdse-458b-9d7d-ce9a227d64a5', 'Solstice 101', 'intro, solstice');
