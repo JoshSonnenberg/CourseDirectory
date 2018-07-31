@@ -2,15 +2,25 @@ package com.solstice.courseservice;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@RequestMapping("/courses")
 public class CourseController {
 
-    public CourseController() {}
+    private final CourseRepository courseRepository;
 
-    @GetMapping("/")
+    public CourseController(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
+
+    @GetMapping("/greeting")
     public String greeting() {
         return "Course Service";
     }
 
-
+    @GetMapping
+    public List<CourseInfo> courses() {
+        return null;
+    }
 }
