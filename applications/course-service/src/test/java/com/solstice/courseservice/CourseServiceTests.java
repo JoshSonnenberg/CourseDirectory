@@ -1,6 +1,7 @@
 package com.solstice.courseservice;
 
 import org.junit.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,19 +12,23 @@ import static junit.framework.TestCase.assertEquals;
 //@SpringBootTest
 public class CourseServiceTests {
 
-    @Test
-    public void testGetAllCoursesWhenNoneExist() {
-        CourseController controller = new CourseController();
-        List<CourseInfo> expectedCourses = null;
-        assertEquals(controller.courses(), expectedCourses);
-    }
+//    @Test
+//    public void testGetAllCoursesWhenNoneExist() {
+//        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+//        CourseRepository courseRepository = new CourseRepository(jdbcTemplate);
+//        CourseController controller = new CourseController(courseRepository, new CoursePresenter());
+//        List<CourseInfo> expectedCourses = null;
+//        assertEquals(controller.courses(), expectedCourses);
+//    }
 
-    @Test
-    public void testGetAllCoursesWhenOneExist() {
-        CourseController controller = new CourseController();
-        CourseInfo expectedCourse = new CourseInfo();
-        assertEquals(controller.courses().size(), 1);
-        assertEquals(controller.courses().get(0), expectedCourse);
-    }
+//    @Test
+//    public void testGetAllCoursesWhenOneExist() {
+//        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+//        CourseRepository courseRepository = new CourseRepository(jdbcTemplate);
+//        CourseController controller = new CourseController(courseRepository);
+//        CourseInfo expectedCourse = new CourseInfo();
+//        assertEquals(controller.courses().size(), 1);
+//        assertEquals(controller.courses().get(0), expectedCourse);
+//    }
 
 }
