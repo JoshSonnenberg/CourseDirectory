@@ -5,7 +5,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class CourseRepository {
@@ -35,4 +37,10 @@ public class CourseRepository {
         return this.jdbcTemplate.query(fullQuery, rowMapper);
     }
 
+    public final String QUERY_BY_IDS = "select * from course where id in ";
+    public List<CourseRecord> getCoursesByIds(List<String> ids) {
+        List<String> queryIds = ids.stream().map(id -> "\"" + id + "\"").collect(Collectors.toList());
+        String finalQuery = QUERY_BY_IDS + "(" + String.join(", ", queryIds) + ")";
+        return this.jdbcTemplate.query(finalQuery, rowMapper);
+    }
 }

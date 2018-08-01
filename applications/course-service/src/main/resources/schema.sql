@@ -7,3 +7,13 @@ CREATE TABLE course
     tags varchar(1000),
     PRIMARY KEY (id)
 );
+
+DROP TABLE IF EXISTS enrollment;
+
+CREATE TABLE enrollment
+(
+    employeeId varchar(36) NOT NULL,
+    courseId varchar(36) NOT NULL,
+    completed varchar(1) DEFAULT 'N',
+    PRIMARY KEY (employeeId, courseId)
+);

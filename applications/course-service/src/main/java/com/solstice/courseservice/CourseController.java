@@ -12,10 +12,13 @@ public class CourseController {
 
     private final CourseRepository courseRepository;
     private final CoursePresenter coursePresenter;
+    private final EnrollmentRepository enrollmentRepository;
 
-    public CourseController(CourseRepository courseRepository, CoursePresenter coursePresenter) {
+
+    public CourseController(CourseRepository courseRepository, CoursePresenter coursePresenter, EnrollmentRepository enrollmentRepository) {
         this.courseRepository = courseRepository;
         this.coursePresenter = coursePresenter;
+        this.enrollmentRepository = enrollmentRepository;
     }
 
     @GetMapping("/greeting")
@@ -37,5 +40,21 @@ public class CourseController {
                 .stream()
                 .map(coursePresenter::present)
                 .collect(toList());
+    }
+
+    private List<CourseInfo> coursesByIds(List<String> ids) {
+        return courseRepository.getCoursesByIds(ids)
+                .stream()
+                .map(coursePresenter::present)
+                .collect(toList());
+    }
+
+    @GetMapping("employee/{id}")
+    public List<CourseInfo> completedCoursesByEmployeeId(@PathVariable("id") String id) {
+        List<String> courseIds = enrollmentRepository.getCompletedCourseIdsForEmployee(id);
+        if (courseIds.size() == 0)
+            return null;
+
+        return this.coursesByIds(courseIds);
     }
 }
