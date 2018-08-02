@@ -2,6 +2,7 @@ package com.solstice.courseservice;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.Path;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -57,4 +58,12 @@ public class CourseController {
 
         return this.coursesByIds(courseIds);
     }
+
+    @GetMapping("/course/{id}")
+    public List<String> employeesForCompletedCourseById(@PathVariable("id") String id) {
+        List<String> employeeIds = enrollmentRepository.getEmployeeIdByCourseId(id);
+
+        return employeeIds;
+    }
+
 }

@@ -7,11 +7,17 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class EmployeeRepository {
-    public static List<EmployeeRecord> getEmployeesByCourseId(String courseId) {
-        return null;
+
+    public final String QUERY_BY_IDS = "select * from employee where id in ";
+
+    public List<EmployeeRecord> getEmployeesByIds(List<String> employeeIds) {
+        List<String> queryIds = employeeIds.stream().map(id -> "\"" + id + "\"").collect(Collectors.toList());
+        String finalQuery = QUERY_BY_IDS + "(" + String.join(", ", queryIds) + ")";
+        return this.jdbcTemplate.query(finalQuery, rowMapper);
     }
 
     private final JdbcTemplate jdbcTemplate;

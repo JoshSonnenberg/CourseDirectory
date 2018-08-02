@@ -14,7 +14,7 @@ public class EnrollmentRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<String> rowMapper = (ResultSet resultSet, int row) -> resultSet.getString("courseId");
-
+    private final RowMapper<String> employeeRowMapper = (ResultSet resultSet, int row) -> resultSet.getString("employeeId");
 
     public EnrollmentRepository(JdbcTemplate template) {
         this.jdbcTemplate = template;
@@ -26,6 +26,9 @@ public class EnrollmentRepository {
     }
 
     private final String EMPLOYEE_BY_ID_QUERY = "select employeeId from enrollment where courseId = ? and completed=\"Y\"";
+    public List<String> getEmployeeIdByCourseId(String courseId) {
+        return this.jdbcTemplate.query(EMPLOYEE_BY_ID_QUERY, new Object[]{courseId}, employeeRowMapper);
+    }
 
 
 }
