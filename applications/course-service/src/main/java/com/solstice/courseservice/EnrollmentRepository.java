@@ -25,4 +25,7 @@ public class EnrollmentRepository {
         return this.jdbcTemplate.query(COURSE_BY_ID_QUERY, new Object[]{employeeId}, rowMapper);
     }
 
+    private final String EMPLOYEE_BY_ID_QUERY = "select employeeId from enrollment where courseId = ? and completed=\"Y\"";
+
+
 }
