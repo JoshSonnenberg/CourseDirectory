@@ -17,7 +17,7 @@ public class EmployeeController {
 
     public EmployeeController() {}
 
-    @GetMapping("/")
+    @GetMapping
     public String greeting() {
         return "Employee Service";
     }
