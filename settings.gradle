@@ -2,3 +2,4 @@ rootProject.name = 'course-directory'
 
 include 'applications:course-service'
 include 'applications:employee-service'
+include 'applications:service-registry'
