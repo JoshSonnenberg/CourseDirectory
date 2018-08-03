@@ -1,5 +1,7 @@
-package com.solstice.employeeservice;
+package com.solstice.employeeservice.utils;
 
+import com.solstice.employeeservice.models.EmployeeInfo;
+import com.solstice.employeeservice.models.EmployeeRecord;
 import org.springframework.stereotype.Component;
 
 @Component

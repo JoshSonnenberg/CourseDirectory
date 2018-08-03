@@ -1,29 +1,30 @@
-package com.solstice.courseservice;
+package com.solstice.courseservice.controllers;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import com.solstice.courseservice.course.model.CourseInfo;
+import com.solstice.courseservice.course.service.CourseService;
+import com.solstice.courseservice.enrollment.database.EnrollmentRepository;
+import com.solstice.courseservice.enrollment.service.EnrollmentService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.Path;
-import java.net.URI;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
 
-    private final CourseRepository courseRepository;
-    private final CoursePresenter coursePresenter;
+
+
+    private final CourseService courseService;
+    private final EnrollmentService enrollmentService;
     private final EnrollmentRepository enrollmentRepository;
 
 
-    public CourseController(CourseRepository courseRepository, CoursePresenter coursePresenter, EnrollmentRepository enrollmentRepository) {
-        this.courseRepository = courseRepository;
-        this.coursePresenter = coursePresenter;
+    public CourseController(CourseService courseService, EnrollmentService enrollmentService, EnrollmentRepository enrollmentRepository) {
+        this.courseService = courseService;
+        this.enrollmentService = enrollmentService;
         this.enrollmentRepository = enrollmentRepository;
     }
 
@@ -31,36 +32,25 @@ public class CourseController {
 
     @GetMapping("/greeting")
     public String greeting() {
-        return "Course Service";
+        return courseService.greeting();
     }
 
     @GetMapping
     public List<CourseInfo> courses() {
-        return courseRepository.getAll()
-                .stream()
-                .map(coursePresenter::present)
-                .collect(toList());
+        return courseService.courses();
     }
 
     @GetMapping("tag/{tagName}")
     public List<CourseInfo> coursesByTag(@PathVariable("tagName") String tag) {
-        return courseRepository.getAllByTag(tag)
-                .stream()
-                .map(coursePresenter::present)
-                .collect(toList());
+        return courseService.coursesByTag(tag);
     }
 
     @GetMapping("employeeId/tag/{tagName}")
-    public List<String> courseIdByTag(@PathVariable("tagName") String tag) {
-        List<CourseInfo> courseInfo = this.coursesByTag(tag);
-        List<String> ids = courseInfo.stream().map(info -> info.id).collect(toList());
-        if (ids.size() == 0) {
-            return ids;
-        }
-
-        return this.employeeIdsByCourseIds(ids);
+    public List<String> employeeIdsByCourseIds(@PathVariable("tagName") String tag) {
+        List<String> courseIds = this.courseService.courseIdsByTag(tag);
+        return this.enrollmentService.employeeIdsByCourseIds(courseIds);
     }
-
+/*
     @GetMapping("employee/{id}")
     public List<CourseInfo> completedCoursesByEmployeeId(@PathVariable("id") String id) {
         List<String> courseIds = enrollmentRepository.getCompletedCourseIdsForEmployee(id);
@@ -117,12 +107,6 @@ public class CourseController {
                 .collect(toList());
     }
 
-    private List<String> employeeIdsByCourseIds(List<String> courseIds) {
-        List<String> employeeIds = enrollmentRepository.getEmployeeIdsByCourseIds(courseIds);
-        if (employeeIds.size() == 0)
-            return employeeIds;
-
-        return employeeIds;
-    }
+*/
 
 }

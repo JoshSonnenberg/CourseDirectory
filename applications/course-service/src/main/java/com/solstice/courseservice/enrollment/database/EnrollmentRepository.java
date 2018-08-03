@@ -1,17 +1,14 @@
-package com.solstice.courseservice;
+package com.solstice.courseservice.enrollment.database;
 
+import com.solstice.courseservice.enrollment.model.EnrollmentInfo;
+import com.solstice.courseservice.enrollment.model.NewEnrollmentFields;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.stereotype.Repository;
 
-import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static java.util.UUID.randomUUID;
-import static java.util.stream.Collectors.toList;
 
 @Repository
 public class EnrollmentRepository {

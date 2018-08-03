@@ -2,9 +2,9 @@ package com.solstice.employeeservice;
 
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
-import com.netflix.discovery.shared.Applications;
-import com.netflix.eureka.EurekaServerContextHolder;
-import com.netflix.eureka.registry.PeerAwareInstanceRegistry;
+import com.solstice.employeeservice.database.EmployeeRepository;
+import com.solstice.employeeservice.models.EmployeeInfo;
+import com.solstice.employeeservice.utils.EmployeePresenter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

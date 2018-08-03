@@ -1,5 +1,6 @@
-package com.solstice.courseservice;
+package com.solstice.courseservice.course.database;
 
+import com.solstice.courseservice.course.model.CourseRecord;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

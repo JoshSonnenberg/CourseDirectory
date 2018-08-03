@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CourseService {
+public class CourseDirectoryApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CourseService.class, args);
+        SpringApplication.run(CourseDirectoryApplication.class, args);
     }
 }

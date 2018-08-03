@@ -1,4 +1,4 @@
-package com.solstice.employeeservice;
+package com.solstice.employeeservice.models;
 
 public class EmployeeInfo {
 

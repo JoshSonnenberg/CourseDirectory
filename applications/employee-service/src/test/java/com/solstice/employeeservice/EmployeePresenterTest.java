@@ -1,5 +1,8 @@
 package com.solstice.employeeservice;
 
+import com.solstice.employeeservice.models.EmployeeInfo;
+import com.solstice.employeeservice.models.EmployeeRecord;
+import com.solstice.employeeservice.utils.EmployeePresenter;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

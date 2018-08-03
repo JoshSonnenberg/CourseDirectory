@@ -1,4 +1,4 @@
-package com.solstice.courseservice;
+package com.solstice.courseservice.enrollment.model;
 
 import lombok.Data;
 
