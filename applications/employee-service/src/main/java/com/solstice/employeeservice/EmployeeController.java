@@ -39,10 +39,10 @@ public class EmployeeController {
         return "Employee Service";
     }
 
-    @GetMapping("/course/{courseId}")
-    public List<EmployeeInfo> employeesByCourseId(@PathVariable("courseId") String courseId) {
+    @GetMapping("/course/{tag}")
+    public List<EmployeeInfo> employeesByCourseTag(@PathVariable("tag") String tag) {
 
-        List<String> employeeIds = Arrays.asList(restTemplate.getForObject(fetchCourseServiceUrl() + courseId, String[].class));
+        List<String> employeeIds = Arrays.asList(restTemplate.getForObject(fetchCourseServiceUrl() + tag, String[].class));
 
         if (employeeIds.size() == 0) {
             return null;
@@ -57,7 +57,7 @@ public class EmployeeController {
     private String fetchCourseServiceUrl() {
         discoveryClient.getAllKnownRegions();
         InstanceInfo instance = discoveryClient.getNextServerFromEureka("Course-Service", false);
-        String courseServiceUrl = instance.getHomePageUrl() + "courses/course/";
+        String courseServiceUrl = instance.getHomePageUrl() + "courses/employeeId/tag/";
 
         return courseServiceUrl;
     }

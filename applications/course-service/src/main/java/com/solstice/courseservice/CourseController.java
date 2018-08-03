@@ -43,6 +43,17 @@ public class CourseController {
                 .collect(toList());
     }
 
+    @GetMapping("employeeId/tag/{tagName}")
+    public List<String> courseIdByTag(@PathVariable("tagName") String tag) {
+        List<CourseInfo> courseInfo = this.coursesByTag(tag);
+        List<String> ids = courseInfo.stream().map(info -> info.id).collect(toList());
+        if (ids.size() == 0) {
+            return ids;
+        }
+
+        return this.employeeIdsByCourseIds(ids);
+    }
+
     private List<CourseInfo> coursesByIds(List<String> ids) {
         return courseRepository.getCoursesByIds(ids)
                 .stream()
@@ -59,9 +70,10 @@ public class CourseController {
         return this.coursesByIds(courseIds);
     }
 
-    @GetMapping("/course/{id}")
-    public List<String> employeesForCompletedCourseById(@PathVariable("id") String id) {
-        List<String> employeeIds = enrollmentRepository.getEmployeeIdByCourseId(id);
+    private List<String> employeeIdsByCourseIds(List<String> courseIds) {
+        List<String> employeeIds = enrollmentRepository.getEmployeeIdsByCourseIds(courseIds);
+        if (employeeIds.size() == 0)
+            return employeeIds;
 
         return employeeIds;
     }

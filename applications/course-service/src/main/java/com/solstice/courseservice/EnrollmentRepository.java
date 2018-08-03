@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -25,10 +26,12 @@ public class EnrollmentRepository {
         return this.jdbcTemplate.query(COURSE_BY_ID_QUERY, new Object[]{employeeId}, rowMapper);
     }
 
-    private final String EMPLOYEE_BY_ID_QUERY = "select employeeId from enrollment where courseId = ? and completed=\"Y\"";
-    public List<String> getEmployeeIdByCourseId(String courseId) {
-        return this.jdbcTemplate.query(EMPLOYEE_BY_ID_QUERY, new Object[]{courseId}, employeeRowMapper);
+    private final String EMPLOYEE_BY_ID_QUERY = "select employeeId from enrollment where completed=\"Y\" and courseId in ";
+    public List<String> getEmployeeIdsByCourseIds(List<String> ids) {
+        List<String> queryIds = ids.stream().map(id -> "\"" + id + "\"").collect(Collectors.toList());
+        String queryParameter = "(" + String.join(", ", queryIds) + ")";
+        String finalQuery = EMPLOYEE_BY_ID_QUERY + queryParameter;
+        return this.jdbcTemplate.query(finalQuery, employeeRowMapper);
     }
-
 
 }
