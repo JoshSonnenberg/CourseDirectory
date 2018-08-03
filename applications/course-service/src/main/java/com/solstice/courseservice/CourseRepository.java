@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,5 +41,12 @@ public class CourseRepository {
         List<String> queryIds = ids.stream().map(id -> "\"" + id + "\"").collect(Collectors.toList());
         String finalQuery = QUERY_BY_IDS + "(" + String.join(", ", queryIds) + ")";
         return this.jdbcTemplate.query(finalQuery, rowMapper);
+    }
+
+    private final String UPDATE_TAG = "update course set tags = ? where id = ?";
+    private final String QUERY_BY_ID = "select * from course where id = ";
+    public CourseRecord update(String courseId, String tags) {
+        jdbcTemplate.update(UPDATE_TAG, tags, courseId);
+        return this.jdbcTemplate.queryForObject(QUERY_BY_ID + "\"" + courseId + "\"", rowMapper);
     }
 }

@@ -21,10 +21,10 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private EmployeeRepository employeeRepository;
-    private EmployeePresenter employeePresenter;
-    private EurekaClient discoveryClient;
-    private RestTemplate restTemplate;
+    private final EmployeeRepository employeeRepository;
+    private final EmployeePresenter employeePresenter;
+    private final EurekaClient discoveryClient;
+    private final RestTemplate restTemplate;
 
     @Autowired
     public EmployeeController(EurekaClient discoveryClient, EmployeePresenter employeePresenter, EmployeeRepository employeeRepository) {

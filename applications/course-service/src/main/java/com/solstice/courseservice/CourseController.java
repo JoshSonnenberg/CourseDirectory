@@ -1,8 +1,13 @@
 package com.solstice.courseservice;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.ws.rs.Path;
+import java.net.URI;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -21,6 +26,8 @@ public class CourseController {
         this.coursePresenter = coursePresenter;
         this.enrollmentRepository = enrollmentRepository;
     }
+
+    // Get Requests
 
     @GetMapping("/greeting")
     public String greeting() {
@@ -54,13 +61,6 @@ public class CourseController {
         return this.employeeIdsByCourseIds(ids);
     }
 
-    private List<CourseInfo> coursesByIds(List<String> ids) {
-        return courseRepository.getCoursesByIds(ids)
-                .stream()
-                .map(coursePresenter::present)
-                .collect(toList());
-    }
-
     @GetMapping("employee/{id}")
     public List<CourseInfo> completedCoursesByEmployeeId(@PathVariable("id") String id) {
         List<String> courseIds = enrollmentRepository.getCompletedCourseIdsForEmployee(id);
@@ -68,6 +68,53 @@ public class CourseController {
             return null;
 
         return this.coursesByIds(courseIds);
+    }
+
+    // POST Requests
+
+    @PostMapping("/enrollment")
+    public ResponseEntity<EnrollmentInfo> add(@RequestBody NewEnrollmentFields newEnrollmentFields) {
+        EnrollmentInfo info = enrollmentRepository.save(newEnrollmentFields);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(buildEnrollmentUri(info));
+
+        return new ResponseEntity<>(info, httpHeaders, HttpStatus.CREATED);
+    }
+
+    // PUT Requests
+
+    @PutMapping("course/tags")
+    public ResponseEntity<CourseInfo> modify(@RequestBody UpdateTagsFields updateTagsFields) {
+        CourseInfo info = coursePresenter.present(courseRepository.update(updateTagsFields.courseId, updateTagsFields.tags));
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(buildCourseUri(info));
+
+        return new ResponseEntity<>(info, httpHeaders, HttpStatus.ACCEPTED);
+    }
+
+    // Helpers
+
+    private URI buildCourseUri(CourseInfo info) {
+        return ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/" + info.id + "/" + info.tags)
+                .buildAndExpand()
+                .toUri();
+    }
+
+    private URI buildEnrollmentUri(EnrollmentInfo info) {
+        return ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/" + info.employeeId + "/" + info.courseId)
+                .buildAndExpand()
+                .toUri();
+    }
+
+    private List<CourseInfo> coursesByIds(List<String> ids) {
+        return courseRepository.getCoursesByIds(ids)
+                .stream()
+                .map(coursePresenter::present)
+                .collect(toList());
     }
 
     private List<String> employeeIdsByCourseIds(List<String> courseIds) {
